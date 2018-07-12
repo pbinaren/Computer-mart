@@ -1,12 +1,15 @@
 package com.computermart.controller;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -24,7 +27,7 @@ import com.computermart.projectbackend.model.UserCredentials;
 
 @Controller
 public class LoginController {
-	
+
 	@Autowired
 	private CategoryDao categoryDAO;
 	@Autowired
@@ -33,6 +36,8 @@ public class LoginController {
 	private CustomerDao customerDAO;
 	@Autowired
 	private CartDao cartDAO;
+	@Autowired
+	private JavaMailSender mailSender;
 
 	@RequestMapping(value = "login")
 	public String login(Model model) {
@@ -45,36 +50,38 @@ public class LoginController {
 		return "page";
 
 	}
-	
+
 	@RequestMapping("/loginerror")
-	public String loginFailure(Model model){
+	public String loginFailure(Model model) {
 		model.addAttribute("title", "Sign In");
 		model.addAttribute("loginerror", true);
 		model.addAttribute("categorylist", categoryDAO.list());
 		model.addAttribute("userClickLogin", true);
-		model.addAttribute("error","Invalid email/password");
+		model.addAttribute("error", "Invalid email/password");
 		return "page";
 	}
+
 	@RequestMapping("/logout")
-	public String logout(Model model){
-		model.addAttribute("msg","Loggedout successfully..");
+	public String logout(Model model) {
+		model.addAttribute("msg", "Loggedout successfully..");
 		model.addAttribute("title", "Sign In");
 		model.addAttribute("categorylist", categoryDAO.list());
 		model.addAttribute("userClickLogin", true);
 		model.addAttribute("loginerror", false);
-		
+
 		return "page";
 	}
-	
+
 	@RequestMapping("/loginsuccess")
-	public String loginsuccess(HttpSession session, Model model){
-		
+	public String loginsuccess(HttpSession session, Model model) {
+
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		
+
 		@SuppressWarnings("unchecked")
-		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-		for(GrantedAuthority authority: authorities) {
-			if(authority.getAuthority().equals("ROLE_USER")) {
+		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) SecurityContextHolder.getContext()
+				.getAuthentication().getAuthorities();
+		for (GrantedAuthority authority : authorities) {
+			if (authority.getAuthority().equals("ROLE_USER")) {
 				Customer customer = customerDAO.showCustomer(email);
 				session.setAttribute("useremail", customer.getName());
 				session.setAttribute("usercartid", customer.getCartId());
@@ -84,9 +91,7 @@ public class LoginController {
 				model.addAttribute("productlist", productDAO.getAllProducts());
 				model.addAttribute("categorylist", categoryDAO.list());
 				model.addAttribute("userClickProducts", true);
-			}
-			else
-			{
+			} else {
 				session.setAttribute("useremail", "Admin");
 				session.setAttribute("userlogin", false);
 				model.addAttribute("title", "Home");
@@ -94,10 +99,10 @@ public class LoginController {
 				model.addAttribute("categorylist", categoryDAO.list());
 			}
 		}
-		
+
 		return "page";
 	}
-	
+
 	@RequestMapping(value = "registration")
 	public String registration(Model model) {
 
@@ -112,23 +117,21 @@ public class LoginController {
 
 	@RequestMapping(value = "addcustomer")
 	public String setcustomer(@Valid @ModelAttribute("customer") Customer customer, BindingResult result, Model model) {
-		if(result.hasErrors()) 
-		{
+		if (result.hasErrors()) {
 			model.addAttribute("title", "Register");
 			model.addAttribute("userClickRegistration", true);
 			model.addAttribute("categorylist", categoryDAO.list());
 			model.addAttribute("customer", customer);
 			model.addAttribute("status", true);
 			model.addAttribute("edit", false);
-			
+
 			return "page";
 		}
 
 		try {
 			customerDAO.addCustomer(customer);
 			return "redirect:/home";
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			model.addAttribute("title", "Register");
 			model.addAttribute("userClickRegistration", true);
 			model.addAttribute("categorylist", categoryDAO.list());
@@ -137,9 +140,8 @@ public class LoginController {
 			return "page";
 		}
 
-		
 	}
-	
+
 	@RequestMapping(value = "cart/changepassword")
 	public String changepassword(Model model) {
 
@@ -152,18 +154,17 @@ public class LoginController {
 		return "page";
 
 	}
-	
+
 	@RequestMapping(value = "cart/updatepassword")
-	public String updatepassword(@ModelAttribute("usercred") UserCredentials uc, Model model,HttpServletRequest request) 
-	{
+	public String updatepassword(@ModelAttribute("usercred") UserCredentials uc, Model model,
+			HttpServletRequest request) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		UserCredentials olduc=customerDAO.showcred(email);
-		
-		String oldpassword=request.getParameter("oldpass");
-		
-		if(oldpassword.equals(olduc.getPassword()))
-		{
+
+		UserCredentials olduc = customerDAO.showcred(email);
+
+		String oldpassword = request.getParameter("oldpass");
+
+		if (oldpassword.equals(olduc.getPassword())) {
 			olduc.setPassword(uc.getPassword());
 			customerDAO.saveorupdatepassword(olduc);
 			model.addAttribute("title", "Change Password");
@@ -171,21 +172,53 @@ public class LoginController {
 			model.addAttribute("userClickChangePassword", true);
 			model.addAttribute("usercred", new UserCredentials());
 			model.addAttribute("msg", true);
-			
-		}
-		else
-		{
+
+		} else {
 			model.addAttribute("title", "Change Password");
 			model.addAttribute("categorylist", categoryDAO.list());
 			model.addAttribute("userClickChangePassword", true);
 			model.addAttribute("usercred", new UserCredentials());
 			model.addAttribute("msg1", true);
 		}
-		
+
 		return "page";
 
 	}
 
-	
+	@RequestMapping(value = "/resetpassword")
+	public String resetpassword(Model model, HttpServletRequest request) {
+		String email = request.getParameter("j_username");
+
+		UserCredentials olduc = customerDAO.showcred(email);
+		if (olduc!=null) 
+		{
+			String s=UUID.randomUUID().toString().substring(0, 8);
+			System.out.println(s);
+			String finalmessage = "Hi,\n\n your new password is \n\n "+s+" \n\n regards\n\n Admin";
+			SimpleMailMessage pemail = new SimpleMailMessage();
+			pemail.setTo(email);
+			pemail.setSubject("Your new password for computer mart");
+			pemail.setText(finalmessage);
+			mailSender.send(pemail);
+			olduc.setPassword(s);
+			customerDAO.saveorupdatepassword(olduc);
+			model.addAttribute("title", "Sign In");
+			model.addAttribute("categorylist", categoryDAO.list());
+			model.addAttribute("userClickLogin", true);
+			model.addAttribute("loginerror", false);
+
+		} 
+		else 
+		{
+			model.addAttribute("title", "Sign In");
+			model.addAttribute("categorylist", categoryDAO.list());
+			model.addAttribute("userClickLogin", true);
+			model.addAttribute("loginerror", true);
+
+		}
+
+		return "page";
+
+	}
 
 }
