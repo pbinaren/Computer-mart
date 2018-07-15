@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.computermart.projectbackend.dao.CartDao;
 import com.computermart.projectbackend.dao.CategoryDao;
 import com.computermart.projectbackend.dao.CustomerDao;
-import com.computermart.projectbackend.dao.ProductDao;
 import com.computermart.projectbackend.model.Customer;
 import com.computermart.projectbackend.model.UserCredentials;
 
@@ -30,8 +29,6 @@ public class LoginController {
 
 	@Autowired
 	private CategoryDao categoryDAO;
-	@Autowired
-	private ProductDao productDAO;
 	@Autowired
 	private CustomerDao customerDAO;
 	@Autowired
@@ -73,34 +70,46 @@ public class LoginController {
 	}
 
 	@RequestMapping("/loginsuccess")
-	public String loginsuccess(HttpSession session, Model model) {
-
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-
-		@SuppressWarnings("unchecked")
-		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) SecurityContextHolder.getContext()
-				.getAuthentication().getAuthorities();
-		for (GrantedAuthority authority : authorities) {
-			if (authority.getAuthority().equals("ROLE_USER")) {
-				Customer customer = customerDAO.showCustomer(email);
-				session.setAttribute("useremail", customer.getName());
-				session.setAttribute("usercartid", customer.getCartId());
-				session.setAttribute("userlogin", true);
-				session.setAttribute("cartsize", cartDAO.show(customer.getCartId()).size());
-				model.addAttribute("title", "Products");
-				model.addAttribute("productlist", productDAO.getAllProducts());
-				model.addAttribute("categorylist", categoryDAO.list());
-				model.addAttribute("userClickProducts", true);
-			} else {
-				session.setAttribute("useremail", "Admin");
-				session.setAttribute("userlogin", false);
-				model.addAttribute("title", "Home");
-				model.addAttribute("userClickHome", true);
-				model.addAttribute("categorylist", categoryDAO.list());
+	public String loginsuccess(HttpSession session, Model model) 
+	{
+		if (session.getAttribute("pid") == null) 
+		{
+			String email = SecurityContextHolder.getContext().getAuthentication().getName();
+			@SuppressWarnings("unchecked")
+			Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) SecurityContextHolder.getContext()
+					.getAuthentication().getAuthorities();
+			for (GrantedAuthority authority : authorities) 
+			{
+				if (authority.getAuthority().equals("ROLE_USER")) 
+				{
+					Customer customer = customerDAO.showCustomer(email);
+					session.setAttribute("useremail", customer.getName());
+					session.setAttribute("usercartid", customer.getCartId());
+					session.setAttribute("userlogin", true);
+					session.setAttribute("cartsize", cartDAO.show(customer.getCartId()).size());
+					return "redirect:/products";
+				} 
+				else 
+				{
+					session.setAttribute("useremail", "Admin");
+					session.setAttribute("userlogin", false);
+					return "redirect:/";
+				}
 			}
+		} 
+		else 
+		{
+			String email = SecurityContextHolder.getContext().getAuthentication().getName();
+			Customer customer = customerDAO.showCustomer(email);
+			session.setAttribute("useremail", customer.getName());
+			session.setAttribute("usercartid", customer.getCartId());
+			session.setAttribute("userlogin", true);
+			session.setAttribute("cartsize", cartDAO.show(customer.getCartId()).size());
+			int proid = Integer.parseInt(session.getAttribute("pid").toString());
+			int qnty = Integer.parseInt(session.getAttribute("qid").toString());
+			return "redirect:addprod/" + proid + "?qnty=" + qnty;
 		}
-
-		return "page";
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "registration")
@@ -130,7 +139,7 @@ public class LoginController {
 
 		try {
 			customerDAO.addCustomer(customer);
-			return "redirect:/home";
+			return "redirect:/login";
 		} catch (Exception e) {
 			model.addAttribute("title", "Register");
 			model.addAttribute("userClickRegistration", true);
@@ -190,11 +199,10 @@ public class LoginController {
 		String email = request.getParameter("j_username");
 
 		UserCredentials olduc = customerDAO.showcred(email);
-		if (olduc!=null) 
-		{
-			String s=UUID.randomUUID().toString().substring(0, 8);
+		if (olduc != null) {
+			String s = UUID.randomUUID().toString().substring(0, 8);
 			System.out.println(s);
-			String finalmessage = "Hi,\n\n your new password is \n\n "+s+" \n\n regards\n\n Admin";
+			String finalmessage = "Hi,\n\n your new password is \n\n " + s + " \n\n regards\n\n Admin";
 			SimpleMailMessage pemail = new SimpleMailMessage();
 			pemail.setTo(email);
 			pemail.setSubject("Your new password for computer mart");
@@ -207,9 +215,7 @@ public class LoginController {
 			model.addAttribute("userClickLogin", true);
 			model.addAttribute("loginerror", false);
 
-		} 
-		else 
-		{
+		} else {
 			model.addAttribute("title", "Sign In");
 			model.addAttribute("categorylist", categoryDAO.list());
 			model.addAttribute("userClickLogin", true);

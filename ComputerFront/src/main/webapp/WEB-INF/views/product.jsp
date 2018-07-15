@@ -51,7 +51,7 @@
 				</c:if>
 				<br>
 				<hr>
-				<a href="${contextRoot}/products" class="btn button"> Continue
+				<a href="${contextRoot}/products" class="btn button">Continue
 					Shopping</a>
 				<button type="button" name="refreshcart" id="refreshcart"
 					onclick='setURL()' value="${product.id}" class="btn button">
@@ -78,8 +78,8 @@
 						var count = $('#upqty');
 						orgcount = count.attr('value');
 
-						var cartid = document.getElementById("refreshcart").value;
-						console.log(cartid);
+						var pid = document.getElementById("refreshcart").value;
+						console.log(pid);
 						var qnty = document.getElementById("upqty").value;
 						if (qnty<1 || qnty>5) {
 							count.val(orgcount);
@@ -87,8 +87,8 @@
 
 						} else {
 							text = "";
-							var url = "http://localhost:8080/ComputerFront/cart/addprod/"
-									+ cartid + "?qnty=" + qnty;
+							var url = "http://localhost:8080/ComputerFront/addprod/"
+									+ pid + "?qnty=" + qnty;
 							window.location.href = url;
 						}
 						document.getElementById("demo").innerHTML = text;

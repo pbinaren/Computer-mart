@@ -18,8 +18,7 @@ import com.computermart.projectbackend.model.Cart;
 import com.computermart.projectbackend.model.Product;
 
 @Controller
-public class CartController
-{
+public class CartController {
 
 	@Autowired
 	private CategoryDao categoryDAO;
@@ -27,58 +26,57 @@ public class CartController
 	private ProductDao productDAO;
 	@Autowired
 	private CartDao cartDAO;
-	
-	
-	
 
+	@RequestMapping(value = "addprod/{id}")
+	public String addcart(@PathVariable int id, @RequestParam(value = "qnty") int qnty, Model model,
+			HttpSession session) {
+		if (session.getAttribute("usercartid") != null) {
+			ArrayList<Cart> cartlist = (ArrayList<Cart>) cartDAO
+					.show(Integer.parseInt(session.getAttribute("usercartid").toString()));
+			Product product = productDAO.getProduct(id);
 
+			if (product.getQuantity() >= qnty) {
 
-	@RequestMapping(value = "cart/addprod/{id}")
-	public String addcart(@PathVariable int id,@RequestParam(value="qnty") int qnty, Model model, HttpSession session) 
-	{
-		ArrayList<Cart> cartlist = (ArrayList<Cart>) cartDAO
-				.show(Integer.parseInt(session.getAttribute("usercartid").toString()));
-		Product product = productDAO.getProduct(id);	
-		
-if(product.getQuantity()>=qnty) {
-		
-		for(Cart cartItem:cartlist){
-			if(cartItem.getPid()==id)
-			{
-				
-				cartItem.setQty(qnty);
-				cartItem.setTotal(qnty*product.getPrice());
-				cartDAO.add(cartItem);
+				for (Cart cartItem : cartlist) {
+					if (cartItem.getPid() == id) {
+
+						cartItem.setQty(qnty);
+						cartItem.setTotal(qnty * product.getPrice());
+						cartDAO.add(cartItem);
+						return "redirect:/cart/viewcart";
+					}
+				}
+
+				Cart cart = new Cart();
+				cart.setCartId(Integer.parseInt(session.getAttribute("usercartid").toString()));
+				cart.setPid(product.getId());
+				cart.setPname(product.getName());
+				cart.setQty(qnty);
+				cart.setPprice(product.getPrice());
+				cart.setTotal(product.getPrice());
+				cartDAO.add(cart);
 				return "redirect:/cart/viewcart";
+			} else {
+				model.addAttribute("msg", true);
+				model.addAttribute("productlist", productDAO.getAllProducts());
+				model.addAttribute("product", productDAO.getProduct(id));
+				model.addAttribute("title", "Product Info");
+				model.addAttribute("userClickProductInfo", true);
+				model.addAttribute("categorylist", categoryDAO.list());
+				return "page";
 			}
 		}
-		
-		Cart cart = new Cart();
-		cart.setCartId(Integer.parseInt(session.getAttribute("usercartid").toString()));
-		cart.setPid(product.getId());
-		cart.setPname(product.getName());
-		cart.setQty(qnty);
-		cart.setPprice(product.getPrice());
-		cart.setTotal(product.getPrice());
-		cartDAO.add(cart);
-		return "redirect:/cart/viewcart";
-} else
-{
-	model.addAttribute("msg", true);
-	model.addAttribute("productlist", productDAO.getAllProducts());
-	model.addAttribute("product", productDAO.getProduct(id));
-	model.addAttribute("title", "Product Info"); 	
-	model.addAttribute("userClickProductInfo", true);
-	model.addAttribute("categorylist", categoryDAO.list());
-	return "page";
-}
+		else
+		{
+			session.setAttribute("pid",id);
+			session.setAttribute("qid",qnty);
+			return "redirect:/login";
+		}
 
 	}
 
-	
 	@RequestMapping(value = "cart/viewcart")
-	public String viewcart(Model model, HttpSession session) 
-	{
+	public String viewcart(Model model, HttpSession session) {
 		ArrayList<Cart> cartlist = (ArrayList<Cart>) cartDAO
 				.show(Integer.parseInt(session.getAttribute("usercartid").toString()));
 		model.addAttribute("title", "Cart");
@@ -93,11 +91,7 @@ if(product.getQuantity()>=qnty) {
 
 	@RequestMapping(value = "deletecart/{id}")
 	public String delcart(@PathVariable int id, Model model) {
-			cartDAO.delete(id);
-			return "redirect:/cart/viewcart";
+		cartDAO.delete(id);
+		return "redirect:/cart/viewcart";
 	}
-	
-		
-
-		
 }

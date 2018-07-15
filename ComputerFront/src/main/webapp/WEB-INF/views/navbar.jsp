@@ -56,8 +56,6 @@
 				<li ><a href="${contextRoot}/home">Home</a></li>
 				<li ><a href="${contextRoot}/about">About</a></li>
 				<li ><a href="${contextRoot}/contact">Contact</a></li>
-				<li ><a href="${contextRoot}/products">Products</a></li>
-			
 			<li ><a href="${contextRoot}/admin/categories">Manage Categories</a></li>
 				<li ><a href="${contextRoot}/admin/products">Manage Products</a></li>
 				</ul>

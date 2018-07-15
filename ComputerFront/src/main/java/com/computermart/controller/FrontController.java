@@ -21,7 +21,6 @@ public class FrontController {
 	private CategoryDao categoryDAO;
 	@Autowired
 	private ProductDao productDAO;
-	
 	@Autowired
 	private JavaMailSender mailSender;
 
