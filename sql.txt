@@ -1,0 +1,30 @@
+Category
+------------
+INSERT INTO CATEGORY VALUES(9, 'Laptops');
+INSERT INTO CATEGORY VALUES(36, 'Desktops');
+INSERT INTO CATEGORY VALUES(37, 'Laptop Accessories');
+INSERT INTO CATEGORY VALUES(68, 'Keyboards');
+INSERT INTO CATEGORY VALUES(69, 'RAM');
+INSERT INTO CATEGORY VALUES(70, 'Hard Disk');
+
+Customer
+-----------
+INSERT INTO CUSTOMER VALUES(116,'mails2nn@gmail.com','Narendran G','9894511972');
+
+Usercred
+---------
+INSERT INTO USERCREDENTIALS VALUES('mails2nn@gmail.com','Szr1465!','ROLE_USER');
+INSERT INTO USERCREDENTIALS VALUES('pbi123@gmail.com','Admin@12','ROLE_ADMIN');
+
+Product
+---------
+INSERT INTO PRODUCT VALUES(73,36,'Core i3-7100U,4GB,1TB','Dell Inspiron 3064 All-in-one Desktop',36855.0,49);
+INSERT INTO PRODUCT VALUES(74,36,'AMD RYZEN 3 2200G, 8GB DDR$ 2400MHz','YUMA AMD Vega 8',36690.0,0);
+INSERT INTO PRODUCT VALUES(76,9,'15.6 inch Onyx Black, Core i5-7200, 8GB, 1TB, DOS','Lenovo Ideapad 320',44280.0,10);
+INSERT INTO PRODUCT VALUES(75,9,'15.6 inch, Core i3-7100U, 4GB, 1TB, DOS','Asus Laptop Black',30695.0,5);
+INSERT INTO PRODUCT VALUES(77,9,'15.6 inch, Core i3-7100U, 4GB, 1TB, Windows 10','Dell Inspiron 13 2in1 Laptop',51395.0,10);
+INSERT INTO PRODUCT VALUES(78,37,'16 inch Black','Targus Trek Laptop Backpack',1010.0,10);
+INSERT INTO PRODUCT VALUES(79,68,'Sleek, comfortable keyboard and mouse','Logitech Desktop MK120',1095.0,10);
+INSERT INTO PRODUCT VALUES(80,69,'4GB DDR3 Desktop RAM','G skill Aegis Series',2460.0,10);
+INSERT INTO PRODUCT VALUES(81,70,'Toshiba 500GB Hard Drive','Toshiba 500GB Hard Drive',2765.0,10);
+INSERT INTO PRODUCT VALUES(82,37,'Portronics Oye sports headphone','Portronics Oye sports headphone',250.0,10);
