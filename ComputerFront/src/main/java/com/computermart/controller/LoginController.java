@@ -40,7 +40,7 @@ public class LoginController {
 	public String login(Model model) {
 
 		model.addAttribute("title", "Sign In");
-
+		model.addAttribute("regsuccess", false);
 		model.addAttribute("categorylist", categoryDAO.list());
 		model.addAttribute("userClickLogin", true);
 		model.addAttribute("loginerror", false);
@@ -139,7 +139,11 @@ public class LoginController {
 
 		try {
 			customerDAO.addCustomer(customer);
-			return "redirect:/login";
+			model.addAttribute("title", "Sign In");
+			model.addAttribute("regsuccess", true);
+			model.addAttribute("categorylist", categoryDAO.list());
+			model.addAttribute("userClickLogin", true);
+			return "page";
 		} catch (Exception e) {
 			model.addAttribute("title", "Register");
 			model.addAttribute("userClickRegistration", true);

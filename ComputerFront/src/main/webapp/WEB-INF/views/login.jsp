@@ -10,7 +10,10 @@
             <c:if test="${loginerror }">
 				<span class="alert alert-danger">Invalid email/password</span>
 			</c:if>
-            
+			
+            <c:if test="${regsuccess}">
+				<span class="alert alert-success">Registered Successfully</span>
+			</c:if>
                 <img class="profile-img" src="${images}/logo.jpg"
                     height="100px" width="350px">
                 <form class="form-signin" action='<c:url value='/perform_login'></c:url>' method="POST">

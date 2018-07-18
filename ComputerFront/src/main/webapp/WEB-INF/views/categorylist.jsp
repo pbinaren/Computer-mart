@@ -1,5 +1,6 @@
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+    <c:set var="contextRoot" value="${pageContext.request.contextPath}" />
     
 <div class="container">
 <div class="row">
@@ -43,7 +44,7 @@
       <label class="control-label"  for="submit"></label>
       <div class="controls">
         <input type="submit" id="submit" name="submit" class="btn button">
-       
+       <a class="btn button" href="${contextRoot}/admin/categories">Reset</a>
       </div>
     </div>
   

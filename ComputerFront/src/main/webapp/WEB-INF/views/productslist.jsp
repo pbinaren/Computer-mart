@@ -3,6 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <c:set var="CR"
 	value="${pageContext.request.contextPath}/resources/productimages" />
+	<c:set var="contextRoot" value="${pageContext.request.contextPath}" />
 
 <div class="container">
 	<div class="row">
@@ -86,6 +87,7 @@
 </c:if>
 				<div class="form-group">
 					<input type="submit" class="btn button">
+					<a href="${contextRoot}/admin/products" class="btn button">Reset</a>
 				</div>
 			</form:form>
 		</div>
@@ -109,9 +111,9 @@
 							<li>Quantity ${pl.quantity}</li>
 						</ul>
 					</td>
-					<td><a class='btn button btn-xs' href="editprod/${pl.id}"><span
+					<td><a class='btn button btn-xs' href="${contextRoot}/editprod/${pl.id}"><span
 							class="glyphicon glyphicon-edit"></span> Edit</a></td>
-					<td><a href="delprod/${pl.id}" class="btn button btn-xs"><span
+					<td><a href="${contextRoot}/delprod/${pl.id}" class="btn button btn-xs"><span
 							class="glyphicon glyphicon-remove"></span> Del</a></td>
 				</tr>
 			</c:forEach>

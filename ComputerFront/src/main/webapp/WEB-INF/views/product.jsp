@@ -40,9 +40,9 @@
 					<dd>Free Shipping And COD For Coimbatore, Chennai AND
 						Bangalore</dd>
 				</dl>
-
+<c:if test="${product.quantity != 0}">
 				<label>Enter Quantity</label> <input type="number" min="1" max="5"
-					name="upqty" id="upqty" class="text-center" value="1">
+					name="upqty" id="upqty" class="text-center" value="1"></c:if>
 				<p id="demo"></p>
 				<br>
 				<c:if test="${msg}">
@@ -51,16 +51,22 @@
 				</c:if>
 				<br>
 				<hr>
-				<a href="${contextRoot}/products" class="btn button">Continue
-					Shopping</a>
-				<button type="button" name="refreshcart" id="refreshcart"
-					onclick='setURL()' value="${product.id}" class="btn button">
-					<span class="glyphicon glyphicon-shopping-cart"></span>Add to Cart
-				</button>
-				<a href= "${contextRoot}/cart/addwish/${product.id}"  class="btn button">
-					<span class="glyphicon glyphicon-heart"></span>Add to Wishlist
-				</a>
-
+				<c:if test="${product.quantity == 0 }">
+					<span class="btn button">Out of stock</span>
+				</c:if>
+				
+					<a href="${contextRoot}/products" class="btn button">Continue
+						Shopping</a>
+						<c:if test="${product.quantity != 0}">
+					<button type="button" name="refreshcart" id="refreshcart"
+						onclick='setURL()' value="${product.id}" class="btn button">
+						<span class="glyphicon glyphicon-shopping-cart"></span>Add to Cart
+					</button>
+					</c:if>
+					<a href="${contextRoot}/cart/addwish/${product.id}"
+						class="btn button"> <span class="glyphicon glyphicon-heart"></span>Add
+						to Wishlist
+					</a>
 			</div>
 			<!-- card-body.// -->
 		</div>
@@ -71,28 +77,26 @@
 
 </div>
 <script>
-	$('button[name="refreshcart"]')
-			.click(
-					function() {
-						var text;
-						var count = $('#upqty');
-						orgcount = count.attr('value');
+	$('button[name="refreshcart"]').click(
+			function() {
+				var text;
+				var count = $('#upqty');
+				orgcount = count.attr('value');
 
-						var pid = document.getElementById("refreshcart").value;
-						console.log(pid);
-						var qnty = document.getElementById("upqty").value;
-						if (qnty<1 || qnty>5) {
-							count.val(orgcount);
-							text = "Min 1/Max 5";
+				var pid = document.getElementById("refreshcart").value;
+				console.log(pid);
+				var qnty = document.getElementById("upqty").value;
+				if (qnty<1 || qnty>5) {
+					count.val(orgcount);
+					text = "Min 1/Max 5";
 
-						} else {
-							text = "";
-							var url = "http://localhost:8080/ComputerFront/addprod/"
-									+ pid + "?qnty=" + qnty;
-							window.location.href = url;
-						}
-						document.getElementById("demo").innerHTML = text;
+				} else {
+					text = "";
+					var url = "http://localhost:8080/ComputerFront/addprod/"
+							+ pid + "?qnty=" + qnty;
+					window.location.href = url;
+				}
+				document.getElementById("demo").innerHTML = text;
 
-					});
-	
+			});
 </script>
