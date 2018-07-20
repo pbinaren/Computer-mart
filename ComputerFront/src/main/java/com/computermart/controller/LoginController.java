@@ -54,7 +54,7 @@ public class LoginController {
 		model.addAttribute("loginerror", true);
 		model.addAttribute("categorylist", categoryDAO.list());
 		model.addAttribute("userClickLogin", true);
-		model.addAttribute("error", "Invalid email/password");
+		
 		return "page";
 	}
 

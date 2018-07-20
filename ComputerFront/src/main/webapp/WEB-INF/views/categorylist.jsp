@@ -1,6 +1,5 @@
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-    <c:set var="contextRoot" value="${pageContext.request.contextPath}" />
     
 <div class="container">
 <div class="row">
@@ -19,7 +18,7 @@
   
   <div class="form-group">
   <c:if test="${status }">
-  <span class="alert alert-danger">Failed to process the data</span>
+  <span class="btn button1 form-control">Failed to process the data</span>
   </c:if>
   </div>
   <c:if test="${edit}">
@@ -44,7 +43,7 @@
       <label class="control-label"  for="submit"></label>
       <div class="controls">
         <input type="submit" id="submit" name="submit" class="btn button">
-       <a class="btn button" href="${contextRoot}/admin/categories">Reset</a>
+       <a href="${contextRoot}/admin/categories" class="btn button">Reset</a>
       </div>
     </div>
   

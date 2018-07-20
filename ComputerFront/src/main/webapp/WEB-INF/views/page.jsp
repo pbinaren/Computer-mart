@@ -92,6 +92,10 @@ background-color: #236457;
 background-color: #318C7A;
 color: white;
 }
+.button1{
+background-color: #FF9999;
+color: white;
+}
 .label-info{
 background-color: #318C7A;
 color: white;

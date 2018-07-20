@@ -3,7 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <c:set var="CR"
 	value="${pageContext.request.contextPath}/resources/productimages" />
-	<c:set var="contextRoot" value="${pageContext.request.contextPath}" />
+<c:set var="contextRoot" value="${pageContext.request.contextPath}" />
 
 <div class="container">
 	<div class="row">
@@ -32,6 +32,10 @@
 				</c:if>
 
 				<div class="form-group">
+					<c:if test="${status }">
+						<span class="btn button1 form-control">Failed to process
+							the data</span>
+					</c:if>
 					<form:label class="control-label" path="name">Enter Product Name</form:label>
 					<div class="controls">
 						<form:input class="form-control input-xlarge" path="name" />
@@ -72,23 +76,26 @@
 						</c:forEach>
 					</form:select>
 				</div>
-<c:if test="${edit == false}">				
-				<div class="form-group">
-					<form:input class="form-control input-xlarge" type="file"
-						name="fileToUpload" id="fileToUpload" path="image" required="true"></form:input>
-				</div>
+				<c:if test="${edit == false}">
+					<div class="form-group">
+						<form:input class="form-control input-xlarge" type="file"
+							name="fileToUpload" id="fileToUpload" path="image"
+							required="true"></form:input>
+					</div>
 				</c:if>
-<c:if test="${edit == true}">
+				<c:if test="${edit == true}">
+					<div class="form-group">
+						<form:input class="form-control input-xlarge" type="file"
+							name="fileToUpload" id="fileToUpload" path="image"></form:input>
+					</div>
+
+				</c:if>
 				<div class="form-group">
-					<form:input class="form-control input-xlarge" type="file"
-						name="fileToUpload" id="fileToUpload" path="image"></form:input>
+					<input type="submit" class="btn button"> <a
+						href="${contextRoot}/admin/products" class="btn button">Reset</a>
 				</div>
-				
-</c:if>
-				<div class="form-group">
-					<input type="submit" class="btn button">
-					<a href="${contextRoot}/admin/products" class="btn button">Reset</a>
-				</div>
+
+
 			</form:form>
 		</div>
 		<table class="table table-striped custab">
@@ -111,9 +118,9 @@
 							<li>Quantity ${pl.quantity}</li>
 						</ul>
 					</td>
-					<td><a class='btn button btn-xs' href="${contextRoot}/editprod/${pl.id}"><span
+					<td><a class='btn button btn-xs' href="editprod/${pl.id}"><span
 							class="glyphicon glyphicon-edit"></span> Edit</a></td>
-					<td><a href="${contextRoot}/delprod/${pl.id}" class="btn button btn-xs"><span
+					<td><a href="delprod/${pl.id}" class="btn button btn-xs"><span
 							class="glyphicon glyphicon-remove"></span> Del</a></td>
 				</tr>
 			</c:forEach>

@@ -56,11 +56,15 @@
 				<li ><a href="${contextRoot}/home">Home</a></li>
 				<li ><a href="${contextRoot}/about">About</a></li>
 				<li ><a href="${contextRoot}/contact">Contact</a></li>
-			<li ><a href="${contextRoot}/admin/categories">Manage Categories</a></li>
-				<li ><a href="${contextRoot}/admin/products">Manage Products</a></li>
+			
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-			<li><a>Welcome ${sessionScope.useremail}</a></li>
+				<li class="dropdown"><a href="" class="dropdown-toggle"
+					data-toggle="dropdown">Welcome ${sessionScope.useremail}<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+			<li ><a href="${contextRoot}/admin/categories">Manage Categories</a></li>
+				<li ><a href="${contextRoot}/admin/products">Manage Products</a></li>
+				</ul></li>
 		<li><a href="${contextRoot}/logout" >Sign out</a></li>
 			</ul>
 		</c:when>

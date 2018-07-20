@@ -7,15 +7,20 @@
     <div class="row">
         <div class="col-sm-6 col-md-4 col-md-offset-4">
             <div class="account-wall">
-            <c:if test="${loginerror }">
-				<span class="alert alert-danger">Invalid email/password</span>
-			</c:if>
-			
-            <c:if test="${regsuccess}">
-				<span class="alert alert-success">Registered Successfully</span>
-			</c:if>
+            
+            
                 <img class="profile-img" src="${images}/logo.jpg"
-                    height="100px" width="350px">
+                    height="100px" width="300px">
+                    <br>    <br> 
+                    <c:if test="${loginerror }">
+				<span class="btn button1 form-control">Invalid email/password</span>
+			</c:if>
+			<c:if test="${regsuccess }">
+				<span class="btn button form-control">Registered successfully</span>
+			</c:if>
+			<br>
+			<br>
+			
                 <form class="form-signin" action='<c:url value='/perform_login'></c:url>' method="POST">
                 <div class="form-group">
                 <label class="control-label" >Enter Email</label>

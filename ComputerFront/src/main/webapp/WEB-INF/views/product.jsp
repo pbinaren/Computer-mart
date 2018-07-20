@@ -40,9 +40,11 @@
 					<dd>Free Shipping And COD For Coimbatore, Chennai AND
 						Bangalore</dd>
 				</dl>
-<c:if test="${product.quantity != 0}">
-				<label>Enter Quantity</label> <input type="number" min="1" max="5"
-					name="upqty" id="upqty" class="text-center" value="1"></c:if>
+				<c:if test="${product.quantity != 0}">
+					<label>Enter Quantity</label>
+					<input type="number" min="1" max="5" name="upqty" id="upqty"
+						class="text-center" value="1">
+				</c:if>
 				<p id="demo"></p>
 				<br>
 				<c:if test="${msg}">
@@ -51,22 +53,22 @@
 				</c:if>
 				<br>
 				<hr>
+				<a href="${contextRoot}/products" class="btn button">Continue
+					Shopping</a>
 				<c:if test="${product.quantity == 0 }">
 					<span class="btn button">Out of stock</span>
 				</c:if>
-				
-					<a href="${contextRoot}/products" class="btn button">Continue
-						Shopping</a>
-						<c:if test="${product.quantity != 0}">
+				<c:if test="${product.quantity != 0}">
 					<button type="button" name="refreshcart" id="refreshcart"
 						onclick='setURL()' value="${product.id}" class="btn button">
 						<span class="glyphicon glyphicon-shopping-cart"></span>Add to Cart
 					</button>
-					</c:if>
-					<a href="${contextRoot}/cart/addwish/${product.id}"
-						class="btn button"> <span class="glyphicon glyphicon-heart"></span>Add
-						to Wishlist
-					</a>
+				</c:if>
+				<a href="${contextRoot}/cart/addwish/${product.id}"
+					class="btn button"> <span class="glyphicon glyphicon-heart"></span>Add
+					to Wishlist
+				</a>
+
 			</div>
 			<!-- card-body.// -->
 		</div>

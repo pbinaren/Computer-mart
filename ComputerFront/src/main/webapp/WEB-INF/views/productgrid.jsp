@@ -1,3 +1,4 @@
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <c:set var="CR"
@@ -32,9 +33,11 @@
 
 								<div class="col-md-6">
 								
+								
 									<a href='${contextRoot}/info/${pl.id}'
 										class="btn button"><span
 										class="glyphicon glyphicon-info-sign"></span> Info</a>
+
 								</div>
 							</div>
 						</div>
@@ -42,5 +45,7 @@
 				</div>
 			</c:forEach>
 		</div>
-</div>
+
+	</div>
+
 </div>

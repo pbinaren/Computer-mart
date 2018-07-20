@@ -58,7 +58,7 @@
       <!-- Page Features -->
       <div class="row text-center">
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-md-4">
           <div class="card">
             <img class="card-img-top" src="resources/images/8.jpg" width="250" height="200">
             <div class="card-body">
@@ -71,7 +71,7 @@
           </div>
         </div>
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-md-4">
           <div class="card">
             <img class="card-img-top" src="resources/images/5.jpg" width="250" height="200">
             <div class="card-body">
@@ -84,11 +84,11 @@
           </div>
         </div>
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-md-4">
           <div class="card">
             <img class="card-img-top" src="resources/images/18.jpg" width="250" height="200">
             <div class="card-body">
-              <h4 class="card-title">Accessories</h4>
+              <h4 class="card-title">Laptop Accessories</h4>
               <p class="card-text">Laptop Batteries, HDMI Cables, Pendrives, External HDD</p>
             </div>
             <div class="card-footer">
@@ -96,7 +96,8 @@
             </div>
           </div>
         </div>
-
+        
+   
       </div>
       <!-- /.row -->
 
